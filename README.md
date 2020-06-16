@@ -13,3 +13,7 @@ Flutter Application for saving passwords.
 - path_provider
 - sqflite
 
+## To produce latest APK , please find the steps below.
+
+1. Install Flutter 
+2. flutter build apk 
