@@ -53,7 +53,7 @@ class Navigator1State extends State<Navigator1>{
 
                   // Then show a snackbar.
                   Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text(item.name+" dismissed"),backgroundColor: Colors.red));
+                      .showSnackBar(SnackBar(content: Text("Password - "+item.name+" deleted"),backgroundColor: Colors.red));
                 },
                 // Show a red background as the item is swiped away.
                 background: Container(color: Colors.red),

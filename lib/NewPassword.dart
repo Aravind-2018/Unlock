@@ -21,6 +21,8 @@ class _CreateTodoState extends State<NewPassword>{
   final passCtrl = TextEditingController();
   final descCtrl = TextEditingController();
   int id;
+  bool _hidePassword=true;
+
   _CreateTodoState(int id){
     this.id=id;
     if(id!=0){
@@ -61,12 +63,29 @@ class _CreateTodoState extends State<NewPassword>{
           Container(
                 width: 300,
                 padding: EdgeInsets.all(20),
-              child:TextFormField(
-                controller: passCtrl,
-                decoration: InputDecoration(
-                    isDense: true,
-                    labelText: 'Your Password'
-                ),
+              child: new Column(
+                children: <Widget>[
+                  new  TextFormField(
+                    controller: passCtrl,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      hintText: 'Enter your password',
+                      // Here is key idea
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          _hidePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed:  _toggle,
+                      ),
+                    ),
+                    validator: (val) => val.length < 6 ? 'Password too short.' : null,
+                    obscureText: _hidePassword,
+                  ),
+                ]
               )
           ),
           Container(
@@ -101,5 +120,10 @@ class _CreateTodoState extends State<NewPassword>{
     Navigator.pop(context);
   }
 
+  void _toggle() {
+    setState(() {
+      _hidePassword = !_hidePassword;
+    });
+  }
 
 }

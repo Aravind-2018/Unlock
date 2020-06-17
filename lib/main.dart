@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
     bool authenticated = false;
     try {
       authenticated = await _localAuthentication.authenticateWithBiometrics(
-        localizedReason: "Authenticate for Testing", // message for dialog
+        localizedReason: "Use your finger please", // message for dialog
         useErrorDialogs: false,// show error in dialog
         stickyAuth: false,// native process
       );
