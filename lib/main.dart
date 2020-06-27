@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:local_auth/local_auth.dart';
+import 'package:flutter_local_auth_invisible/flutter_local_auth_invisible.dart';
 import 'package:myapp/Navigator1.dart';
 
 
@@ -26,7 +26,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // 2. created object of localauthentication class
   final LocalAuthentication _localAuthentication = LocalAuthentication();
   // 3. variable for track whether your device support local authentication means
   //    have fingerprint or face recognization sensor or not
@@ -72,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       authenticated = await _localAuthentication.authenticateWithBiometrics(
         localizedReason: "Use your finger please", // message for dialog
-        useErrorDialogs: false,// show error in dialog
+        useErrorDialogs: true,// show error in dialog
         stickyAuth: false,// native process
       );
     } catch (e) {
@@ -95,6 +94,37 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+ /* @override
+  Widget build(context) => Scaffold();*/
+
   @override
-  Widget build(context) => Scaffold();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text('Plugin example app'),
+          ),
+          body: ConstrainedBox(
+              constraints: const BoxConstraints.expand(),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Text('Can check biometrics: \n'),
+                    RaisedButton(
+                      child: const Text('Check biometrics'),
+                      onPressed: _getBiometricsSupport,
+                    ),
+                    Text('Available biometrics: \n'),
+                    RaisedButton(
+                      child: const Text('Get available biometrics'),
+                      onPressed: _getAvailableSupport,
+                    ),
+                    Text('Current State: \n'),
+                    RaisedButton(
+                      child: const Text('Authenticate'),
+                      onPressed: _authenticateMe,
+                    )
+                  ])),
+        ));
+  }
 }
