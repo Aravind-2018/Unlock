@@ -70,7 +70,7 @@ class _PasswordState extends State<PasswordForm> {
             labelText: 'Title'
         ),
         autovalidate: true ,
-        validator: (val) => (val.isEmpty)?"Enter the Title":null,
+        validator: (val) => (val.trim().isEmpty)?"Enter the Title":null,
         onSaved: (val){
           titleCtrl.text=val;
         },
@@ -130,7 +130,12 @@ class _PasswordState extends State<PasswordForm> {
   }
 
   validatePass(String val) {
-
+    if(val.isEmpty){
+      return "Password can't be empty";
+    }else if(val.length<4){
+      return "Weak - Length < 4";
+    }
+    return null;
   }
 
   savePassword() {
