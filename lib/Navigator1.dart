@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:clipboard_manager/clipboard_manager.dart';
 import 'package:myapp/DbHelper.dart';
-import 'package:myapp/NewPassword.dart';
 import 'package:myapp/Password.dart';
+import 'package:myapp/PasswordForm.dart';
+
 
 class Navigator1 extends StatefulWidget {
   @override
@@ -18,7 +21,7 @@ class Navigator1State extends State<Navigator1>{
   }
 
   static List<Password> pass = [];
-  List<Widget> _items;
+  final scaffolKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,7 @@ class Navigator1State extends State<Navigator1>{
       refresh();
     });
     return Scaffold(
+      key: scaffolKey,
       appBar: AppBar(
           title: const Text('List of Passwords'),
           actions: <Widget>[
@@ -37,63 +41,48 @@ class Navigator1State extends State<Navigator1>{
             itemBuilder: (context, index) {
               final item = pass[index];
               return Dismissible(
-                // Each Dismissible must contain a Key. Keys allow Flutter to
-                // uniquely identify widgets.
-
-                key: Key(item.toString()),
-                // Provide a function that tells the app
-                // what to do after an item has been swiped away.
+                key: Key(item.name),
                 onDismissed: (direction) {
-                  // Remove the item from the data source.
-
                   setState(() {
                     DbHelper.instance.delete(item.id);
                     pass.removeAt(index);
                   });
-
-                  // Then show a snackbar.
-                  Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text("Password - "+item.name+" deleted"),backgroundColor: Colors.red));
+                  scaffolKey.currentState
+                      .showSnackBar(SnackBar(content: Text("Password - "+item.name+" deleted",textAlign: TextAlign.center,),backgroundColor: Colors.red));
                 },
                 // Show a red background as the item is swiped away.
                 background: Container(color: Colors.red),
-                child: format(item),
+                child: makeCard(item)
               );
             },
         ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => NewPassword(0)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => PasswordForm(null)));
         },
         child: Icon(Icons.add),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.indigo,
       ),
     );
   }
 
-  Widget format(Password password) {
-
-    return Center(
-      key: Key(password.name),
-      child: Padding(
-          padding: EdgeInsets.fromLTRB(12, 6, 12, 4),
-          child: FlatButton(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(password.name,),
-                ]
-            ),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NewPassword(password.id))),
-          )
-      ),
-    );
-  }
   void refresh() async {
     pass = await DbHelper.instance.queryAllRows();
     setState(() { });
   }
 
-
+  Card makeCard(Password password) => Card(
+    child:
+        FlatButton(
+          color: Color.fromARGB(50, 84, 54, 23),
+          child: ListTile(
+            leading: Icon(Icons.vpn_key, size: 40),
+            title: Text(password.name),
+            subtitle: Text(password.desc),
+            ),
+          onLongPress: () => ClipboardManager.copyToClipBoard(password.password).then((value) => HapticFeedback.vibrate()).then((value) => scaffolKey.currentState.showSnackBar(SnackBar(content: Text("Password Copied !!",textAlign: TextAlign.center),duration: Duration(seconds: 1),))),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PasswordForm(password))),
+        )
+  );
 
 }
