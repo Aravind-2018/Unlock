@@ -47,8 +47,20 @@ class Navigator1State extends State<Navigator1>{
                     DbHelper.instance.delete(item.id);
                     pass.removeAt(index);
                   });
-                  scaffolKey.currentState
-                      .showSnackBar(SnackBar(content: Text("Password - "+item.name+" deleted",textAlign: TextAlign.center,),backgroundColor: Colors.red));
+                  scaffolKey.currentState.removeCurrentSnackBar();
+                  scaffolKey.currentState.showSnackBar(
+                      SnackBar(
+                        content: Text("Password - "+item.name+" deleted",textAlign: TextAlign.center,),
+                        backgroundColor: Colors.red ,
+                        action: SnackBarAction(
+                          label: "UNDO",
+                          onPressed: () => setState(() {
+                            pass.insert(index, item);
+                            DbHelper.instance.insert(item.toMap());
+                          }),
+                        ),
+                      )
+                  );
                 },
                 // Show a red background as the item is swiped away.
                 background: Container(color: Colors.red),
