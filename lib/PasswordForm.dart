@@ -130,7 +130,7 @@ class _PasswordState extends State<PasswordForm> {
   }
 
   validatePass(String val) {
-    if(val.isEmpty){
+    if(val.trim().isEmpty){
       return "Password can't be empty";
     }else if(val.length<4){
       return "Weak - Length < 4";
