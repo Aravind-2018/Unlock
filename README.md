@@ -19,3 +19,7 @@ Flutter Application for saving passwords.
 1. Install Flutter 
 2. Clone the repo and go to the directory in command line/prompt
 3. Type "flutter build apk"
+
+or 
+
+Use readymade Apk in the __APK__ folder
