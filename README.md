@@ -4,16 +4,15 @@ Flutter Application for saving passwords.
 
 ## Features
 
-- Create/Update/View/Delete passwords
+- CRUD passwords
 - Authentication using FingerPrint
 - Copy password
 
 ## Thirdparty Packages
 
-- local_auth
+- flutter_local_auth_invisible
 - path_provider
 - sqflite
-- clipboard_manager
 
 ## To produce latest APK , please find the steps below.
 
