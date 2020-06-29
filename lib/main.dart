@@ -27,16 +27,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final LocalAuthentication _localAuthentication = LocalAuthentication();
-  // 3. variable for track whether your device support local authentication means
-  //    have fingerprint or face recognization sensor or not
   bool _hasFingerPrintSupport = false;
-  // 4. we will set state whether user authorized or not
   bool _authorizedOrNot = false;
-  // 5. list of avalable biometric authentication supports of your device will be saved in this array
   List<BiometricType> _availableBuimetricType = List<BiometricType>();
 
   Future<void> _getBiometricsSupport() async {
-    // 6. this method checks whether your device has biometric support or not
     bool hasFingerPrintSupport = false;
     try {
       hasFingerPrintSupport = await _localAuthentication.canCheckBiometrics;
@@ -50,7 +45,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _getAvailableSupport() async {
-    // 7. this method fetches all the available biometric supports of the device
     List<BiometricType> availableBuimetricType = List<BiometricType>();
     try {
       availableBuimetricType =
@@ -65,8 +59,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _authenticateMe() async {
-    // 8. this method opens a dialog for fingerprint authentication.
-    //    we do not need to create a dialog nut it popsup from device natively.
     bool authenticated = false;
     try {
       authenticated = await _localAuthentication.authenticateWithBiometrics(
@@ -99,32 +91,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Plugin example app'),
-          ),
-          body: ConstrainedBox(
-              constraints: const BoxConstraints.expand(),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Text('Can check biometrics: \n'),
-                    RaisedButton(
-                      child: const Text('Check biometrics'),
-                      onPressed: _getBiometricsSupport,
-                    ),
-                    Text('Available biometrics: \n'),
-                    RaisedButton(
-                      child: const Text('Get available biometrics'),
-                      onPressed: _getAvailableSupport,
-                    ),
-                    Text('Current State: \n'),
-                    RaisedButton(
-                      child: const Text('Authenticate'),
-                      onPressed: _authenticateMe,
-                    )
-                  ])),
-        ));
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        image: DecorationImage(image: AssetImage('assets/appimage.jpg'), fit: BoxFit.cover),
+      ),
+    );
   }
 }
