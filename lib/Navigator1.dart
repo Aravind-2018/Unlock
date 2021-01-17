@@ -152,9 +152,8 @@ class Navigator1State extends State<Navigator1>{
   }
 
   void _filterData(value) {
-    print(pass.where((password) => password.name.contains(value)).length);
     setState(() {
-      filterPass=pass.where((password) => password.name.contains(value)).toList();
+      filterPass=pass.where((password) => password.name.toLowerCase().contains(value.toString().toLowerCase())).toList();
     });
   }
 
